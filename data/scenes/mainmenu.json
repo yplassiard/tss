@@ -1,0 +1,16 @@
+{
+    "title": "mainmenu_title",
+    "name": "mainmenu",
+    "type": "menu",
+    "speak-title": true,
+    "choices": ["mm_carreer", "mm_continue", "mm_options", "mm_quit"],
+    "links": {
+        "0": "carreer_tutorial",
+        "1": "load_game",
+        "2": "userOptions",
+        "3": "__quit"
+    },
+    "select-sound": "menuSelect",
+    "validate-sound": "menuValidate",
+    "cancel-sound": "menuCancel"
+}
