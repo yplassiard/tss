@@ -1,10 +1,10 @@
 # *-* coding: utf-8 *-*
 
-import logger
-import constants
-import core
-import gameconfig
-import event_manager
+import src.logger as logger
+import src.constants as constants
+import src.core as core
+import src.gameconfig as gameconfig
+import src.event_manager as event_manager
 import pygame
 import os
 

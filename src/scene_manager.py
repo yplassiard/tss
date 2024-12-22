@@ -11,14 +11,14 @@ import re
 
 import pygame
 
-import constants
-import gameconfig
-import logger
-import audio
-import inputHandler
-import event_manager
-import speech
-import scenes.scene as scene
+import src.constants as constants
+import src.gameconfig as gameconfig
+import src.logger as logger
+import src.audio as audio
+import src.inputHandler as inputHandler
+import src.event_manager as event_manager
+import src.speech as speech
+import src.scenes.scene as scene
 
 # scene types map from string to real objects.
 
@@ -314,8 +314,8 @@ def initialize():
                 name=match.group(1)))
             total_scenes += 1
             try:
-                module = __import__("scenes.%s" % match.group(
-                    1), globals(), locals(), ("scenes"))
+                module = __import__("src.scenes.%s" % match.group(
+                    1), globals(), locals(), ("src", "scenes"))
                 obj = module.Scene(match.group(
                     1), gameconfig.get_scene_configuration(match.group(1)))
                 if obj is not None:

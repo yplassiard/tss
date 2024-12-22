@@ -31,11 +31,11 @@ class StationLine:
     def getLength(self) -> int:
         return self._length
     def getName(self) -> str:
-        return self._name)
+        return self._name
 
     def hasEnding(self) -> bool:
         return self._is_ending
 
     def __str__(self) -> str:
         ending = "with ending" if self._is_ending else "without ending"
-        return f"StationLine({self._name}, {self._lentg!}m, {ending})"
+        return f"StationLine({self._name}, {self._length}m, {ending})"

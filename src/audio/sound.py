@@ -1,8 +1,8 @@
 # *-* coding: utf8 *-*
 
 import pygame
-import constants
-import logger
+import src.constants as constants
+import src.logger as logger
 from . import effects
 
 import os

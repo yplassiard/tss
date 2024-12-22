@@ -1,18 +1,18 @@
 # *-* coding: utf-8 *-*
 
-import constants
-import core
-import event_manager
-import inputHandler
-import speech
-import logger
-import audio
-import gameconfig
+import src.constants as constants
+import src.core as core
+import src.event_manager as event_manager
+import src.inputHandler as inputHandler
+import src.speech as speech
+import src.logger as logger
+import src.audio as audio
+import src.gameconfig as gameconfig
 
 import math
 
 
-class Scene():
+class Scene:
     """Defines a scene representing a particular in-game behavior."""
     name = None
     links = {}

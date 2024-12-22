@@ -3,6 +3,9 @@ TSS - Train Station Simulator
 
 Speech module
 """
+import typing
+
+from typing import Self
 
 import os
 import threading
@@ -13,7 +16,7 @@ class SpeechSystem:
     _speak_queue : list[str] = []
     _is_speaking: bool = False
     _should_quit: bool = False
-    _quit_lock: Threading.RLock = threading.RLock()
+    _quit_lock: threading.RLock = threading.RLock()
     _speech_path: str | None = None
 
     def __init__(self, path: str, *args, **kwargs) -> Self:
@@ -39,7 +42,7 @@ class SpeechSystem:
 def initialize() -> bool:
     """Initializes our home-made speech system
     """
-    import gameconfig
+    import src.gameconfig as gameconfig
 
     return True
 

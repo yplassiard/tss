@@ -151,7 +151,7 @@ def exception(system, message, exception):
     global _instance
     if _instance is not None:
         msg = f"{message}: {exception}"
-        import speech
+        import src.speech as speech
         try:
             speech.speak(msg)
         except:

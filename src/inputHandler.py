@@ -1,6 +1,6 @@
 # *-* coding: utf8 *-*
 import pygame
-import logger
+import src.logger as logger
 
 keyboardMap = {
     pygame.K_ESCAPE: "quit",

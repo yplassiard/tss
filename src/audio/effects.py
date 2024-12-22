@@ -1,11 +1,11 @@
 # *-* coding: utf8 *-*
 
-import logger
+import src.logger as logger
 
 timeEffects = []
 
 
-class Effect(object):
+class Effect:
     """Basic audio effect that does nothing."""
     stepValue = 0.01
     sound = None
@@ -20,7 +20,7 @@ class Effect(object):
                 "Sound {name} does not have any active channel".format(name=self.name))
 
     def __str__(self):
-        return "Effect({name})".format(name=self.name)
+        return f"Effect({self.name})"
 
     def isCompleted(self):
         raise NotImplementedError

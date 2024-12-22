@@ -5,7 +5,7 @@ platform.py - Represents a station's platform including:
 - its associated equipments (mainly speakers for now)
 """
 
-from tss.speaker import Speaker
+from src.tss.speaker import Speaker
 
 class StationPlatform:
     """Represents a station platform"""
@@ -31,7 +31,7 @@ class StationPlatform:
             eq_type = gameconfig.getValue(equipment, "type", str)
             if eq_type != 'speaker':
                 raise RuntimeError(f"equipment type {eq_type} not supported")
-            _equipments.append(Speaker(platform=self, config))
+            _equipments.append(Speaker(config, platform=self))
         return True
 
     def getLength(self) -> int:

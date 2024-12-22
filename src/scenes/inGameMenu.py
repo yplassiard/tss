@@ -1,7 +1,7 @@
 # *-* config: utf8 *-*
 
-from scenes import scene
-import scene_manager
+from src.scenes import scene as scene
+import src.scene_manager as scene_manager
 
 
 class Scene(scene.MenuScene):

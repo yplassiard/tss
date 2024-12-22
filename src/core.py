@@ -12,13 +12,13 @@ import pygame
 from pygame.locals import *
 
 
-import constants
-import gameconfig
-import speech
-import logger
-import audio
-import event_manager
-import scene_manager
+import src.constants as constants
+import src.gameconfig as gameconfig
+import src.speech as speech
+import src.logger as logger
+import src.audio as audio
+import src.event_manager as event_manager
+import src.scene_manager as scene_manager
 
 _INSTANCE = None
 
