@@ -28,11 +28,12 @@ class StationPlatform:
     def loadEquipments(self, config: dict) -> bool:
         """Loadts platform equipments, mainly speakers for now"""
         equipments = gameconfig.get_value(config, "equipments", list, {"defaultValue": []})
+        self._equipments = []
         for equipment in equipments:
             eq_type = gameconfig.get_value(equipment, "type", str)
             if eq_type != 'speaker':
                 raise RuntimeError(f"equipment type {eq_type} not supported")
-            _equipments.append(Speaker(config, platform=self))
+            self._equipments.append(Speaker(equipment, platform=self))
         return True
 
     def getLength(self) -> int:
@@ -42,6 +43,10 @@ class StationPlatform:
         return self._width
 
     
-    def __ssr__(self):
+    def __str__(self):
         return f"Platform({self._length}x{self._width}m, with {len(self._equipments)} equipments)"
+    
+
+    def getEquipments(self):
+        return self._equipments
     

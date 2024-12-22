@@ -38,7 +38,7 @@ class Speaker:
         """Speaker constructor"""
         if platform:
             self._owner = platform
-            self._platformPosition = gameconfig.get_value(config, "platform-position", float, {"minValue": 0.0, "maxValue": platform.getLength()})
+            self._platformPosition = gameconfig.get_value(config, "platform-position", float, {"mandatory": True, "minValue": 0.0, "maxValue": platform.getLength()})
             self._hallPosition = [-1.0, -1.0]
             self._location = LocationType.PLATFORM
         elif hallway:
