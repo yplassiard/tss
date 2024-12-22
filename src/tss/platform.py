@@ -6,18 +6,19 @@ platform.py - Represents a station's platform including:
 """
 
 from src.tss.speaker import Speaker
+from src import gameconfig as gameconfig
 
 class StationPlatform:
     """Represents a station platform"""
-    _lentg: int  # meters
-    _width: int  # meters
+    _lentg: float  # meters
+    _width: float  # meters
     _equipments: list[Speaker]
     _station: "TrainStation"  # associated train station
 
     def __init__(self, station, config: dict):
         """Constructor"""
-        self._length = gameconfig.getValue(config, "lentg!", int, {"minValue": 1, "defaultValue": 500})
-        self._width = gameconfig.getValue(config, "width", {"minValue": 6, "defaultValue": 6})
+        self._length = gameconfig.get_value(config, "lengtg!", float, {"minValue": 1.0, "defaultValue": 500.0})
+        self._width = gameconfig.get_value(config, "width", float, {"minValue": 5.0, "defaultValue": 6.0})
         if station is None:
             raise RuntimeError("Platform must be associated to a station")
         self._station = station
@@ -26,9 +27,9 @@ class StationPlatform:
 
     def loadEquipments(self, config: dict) -> bool:
         """Loadts platform equipments, mainly speakers for now"""
-        equipments = gameconfig.getValue(config, "equipments", list, {"defaultValue": []})
+        equipments = gameconfig.get_value(config, "equipments", list, {"defaultValue": []})
         for equipment in equipments:
-            eq_type = gameconfig.getValue(equipment, "type", str)
+            eq_type = gameconfig.get_value(equipment, "type", str)
             if eq_type != 'speaker':
                 raise RuntimeError(f"equipment type {eq_type} not supported")
             _equipments.append(Speaker(config, platform=self))
