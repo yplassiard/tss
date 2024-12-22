@@ -1,7 +1,8 @@
 # *-* coding utf8 *-*
 
 import queue
-import logger
+
+import src.logger as logger
 
 # general game events
 

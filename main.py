@@ -5,9 +5,9 @@ Main program
 
 import traceback
 
-import core
-import tss_platform
-import speech
+import src.core as core
+import src.tss_platform as tss_platform
+import src.speech as speech
 
 
 if __name__ == '__main__':

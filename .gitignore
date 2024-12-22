@@ -8,3 +8,4 @@ data/*/*#*
 src/*#*
 src/*/*#*
 src/*/*/*#*
+__pycache__

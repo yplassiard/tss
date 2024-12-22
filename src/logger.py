@@ -5,7 +5,7 @@ import io
 import sys
 import traceback
 
-import event_manager
+import src.event_manager as event_manager
 
 
 """Log Categories defines, for each component, the level we want to log."""

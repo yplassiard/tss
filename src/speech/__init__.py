@@ -32,7 +32,7 @@ class SpeechSystem:
             except queue.Empty:
                 time.sleep(0.1)  # sleep for 10ms to avoid CPU usage
                 continue
-            if isinstance(data, str):
+            if not isinstance(data, list):
                 data = [data]
             self._speak_queue.extend(data)
             

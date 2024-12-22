@@ -9,8 +9,8 @@ import os
 import platform
 import sys
 import json
-import logger
-import constants
+import src.logger as logger
+import src.constants as constants
 
 _INSTANCE = None
 
@@ -117,6 +117,7 @@ def initialize(file):
     return False
 
 
+
 def get_library_path():
     """Returns the path to 3rd party libraries (DLL, DyLib, SO)."""
     if _INSTANCE is not None:
@@ -158,10 +159,10 @@ def get_start_scene():
 
 
 def get_value(config, key, cls, attrs=None):
-    """Get value from config file"""
-    if _INSTANCE is None:
-        raise RuntimeError("Game configuration object not initialized")
+    """Get value from dictionnary"""
     if config is None:
+        if _INSTANCE is None:
+            raise RuntimeError("Game configuration object not initialized")
         config = _INSTANCE.config
     mandatory = False
     default_value = None
@@ -192,10 +193,13 @@ def get_value(config, key, cls, attrs=None):
     if list_count is not None and isinstance(ret, list) and len(ret) < list_count:
         raise RuntimeError(
             f"Configuration error: The {key} list has to contain at least {list_count} elements")
+    list_choices = attrs.get("oneOf", None)
+    if list_choices is not None and ret not in list_choices:
+        raise RuntimeError(f"{key} value {ret} has to be one of {list_choices}")
 
     # sound and music property checks
     if key.endswith("sound") or key.endswith("music"):
-        volume = get_value(config, "%s-volume" % key, float,
+        volume = get_value(config, f"{key}-volume", float,
                            {"defaultValue": constants.AUDIO_FX_VOLUME})
         return (ret, volume)
     return ret
