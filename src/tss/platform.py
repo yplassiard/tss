@@ -5,10 +5,15 @@ platform.py - Represents a station's platform including:
 - its associated equipments (mainly speakers for now)
 """
 
+from src.tss.content import (
+    StationContent,
+    StationContentType
+)
+
 from src.tss.speaker import Speaker
 from src import gameconfig as gameconfig
 
-class StationPlatform:
+class StationPlatform(StationContent):
     """Represents a station platform"""
     _lentg: float  # meters
     _width: float  # meters
@@ -17,6 +22,7 @@ class StationPlatform:
 
     def __init__(self, station, config: dict):
         """Constructor"""
+        super().__init__(StationContentType.PLATFORM)
         self._length = gameconfig.get_value(config, "lengtg!", float, {"minValue": 1.0, "defaultValue": 500.0})
         self._width = gameconfig.get_value(config, "width", float, {"minValue": 5.0, "defaultValue": 6.0})
         if station is None:

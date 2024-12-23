@@ -4,7 +4,6 @@ scene_manager
 This modules handles the scene life-time.
 """
 
-# *-* coding: utf8 *-*
 
 import os
 import re
@@ -32,8 +31,6 @@ class SceneManager():
     """
     _sceneTypesMap = {
         "menu": scene.MenuScene,
-        "storytext": scene.StoryTextScene,
-        "mapregion": scene.MapRegionScene
     }
     _scenes = {}
     _intervalScenes = []
@@ -61,6 +58,7 @@ class SceneManager():
         if issubclass(cls, scene.Scene) is False:
             raise RuntimeError("invalid scene type {type} ({real})".format(type=scene_type,
                                                                            real=cls.__name__))
+        self._sceneTypesMap[scene_type] = cls
         logger.debug(self, "Creating scene {cls}({name})".format(
             cls=cls.__name__, name=name))
         try:

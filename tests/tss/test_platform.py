@@ -1,4 +1,6 @@
 from src.tss.platform import *
+from src.tss.content import StationContentType
+
 class TrainStation:
     _name = "test"
 
@@ -6,6 +8,7 @@ def test_platform_init():
     pconfig = {"length": 500.0, "width": 6.0}
     station = TrainStation()
     platform = StationPlatform(station, pconfig)
+    assert platform.getContentType() == StationContentType.PLATFORM
     assert platform.getLength() == 500.0
     assert platform.getWidth() == 6.0
     
@@ -13,7 +16,7 @@ def test_platform_init():
 def test_platform_init_with_equipment():
     pconfig = {"length": 500.0, "width": 6.0,
                "equipments": [{"type": "speaker", "platform-position": 1.0},
-                              {"type": "speaker", "platform-position": 6.0}
+                              {"type": "speaker", "platform-position": 6.0, "directivity": "hyper-cardioid"}
                               ]
                }
     station = TrainStation()
@@ -24,3 +27,4 @@ def test_platform_init_with_equipment():
     eqs = platform.getEquipments()
     assert len(eqs) == 2
     assert eqs[0].getPosition() == [1.0, 3.0]
+    assert eqs[1].getPosition() == [6.0, 3.0]
