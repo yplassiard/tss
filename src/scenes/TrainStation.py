@@ -40,11 +40,6 @@ class Scene(IntervalScene):
     def loadLinesAndPlatforms(self, lps):
         """Load all platforms and associated lines, setting their coordinates in the station's area."""
         cur_pos = 0.0
-        try:
-            lps.sort(key=lambda x: x["width"])
-        except KeyError:
-            logger.exception(self, f"Failed to parse station \"content\" array: {ex}", ex)
-            raise ex
         errors = False
         if len(lps) == 0:
             raise RuntimeError("No \"content\" data")
@@ -52,22 +47,13 @@ class Scene(IntervalScene):
             ctype = gameconfig.get_value(content, "type", str, {"oneOf": ["line", "platform"], "mandatory": True})
             obj = None
             if ctype == 'line':
-                try:
-                    obj = StationLine(self, content)
-                except Exception as ex:
-                    logger.exception(self, f"Failed to instanciate {ctype}: {ex}", ex)
-                    raise ex
-                    errors = True
+                obj = StationLine(self, content)
             elif ctype == 'platform':
-                try:
-                    obj = StationPlatform(self, content)
-                except Exception as ex:
-                    logger.exception(self, f"Failed to instanciate {ctype}: {ex}", ex)
-                    raise ex
-                    errors = True
-                
+                obj = StationPlatform(self, content)
+            else:
+                raise RuntimeError(f"Unsupported station content type {ctype}")
             if cur_pos + obj.getWidth() > self._width:
-                logger.error(self, f"{str(obj)}: outside station area width")
+                logger.error(self, f"{str(obj)}: at position {cur_pos} outside station area width")
                 errors = True
                 continue
             obj.setPosition((cur_pos, 0.0))
@@ -81,6 +67,7 @@ class Scene(IntervalScene):
         # determine if a line is storage
 
         for i in range(len(self._content)):
+            logger.debug(self, f"Item {str(self._content[i])}")
             if self._content[i].getContentType() == StationContentType.LINE:
                 if ((i + 1 < len(self._content) and self._content[i + 1].getContentType() == StationContentType.PLATFORM) \
                     or (i > 0 and self._content[i - 1].getContentType() == StationContentType.PLATFORM)):

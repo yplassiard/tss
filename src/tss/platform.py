@@ -24,8 +24,8 @@ class StationPlatform(StationContent):
     def __init__(self, station, config: dict):
         """Constructor"""
         super().__init__(StationContentType.PLATFORM)
-        self._length = gameconfig.get_value(config, "lengtg!", float, {"minValue": 1.0, "defaultValue": 500.0})
-        self._width = gameconfig.get_value(config, "width", float, {"minValue": 5.0, "defaultValue": 6.0})
+        self._length = gameconfig.get_value(config, "length", float, {"minValue": 1.0, "defaultValue": 500.0, "mandatory": True})
+        self._width = gameconfig.get_value(config, "width", float, {"minValue": 5.0, "defaultValue": 6.0, "mandatory": True})
         if station is None:
             raise RuntimeError("Platform must be associated to a station")
         self._station = station

@@ -54,9 +54,12 @@ class StationLine(StationContent):
     def hasEnding(self) -> bool:
         return self._is_ending
 
+    def getLineType(self) -> StationLineType:
+        return self._type
+    
     def setLineType(self, stype: StationLineType):
         self._type = stype
-        logger.debug(self, f"setType: {str(self)}")
+        logger.debug(self, f"setType")
 
     def setPosition(self, position: tuple[float, float]):
         self._position = position

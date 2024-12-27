@@ -10,7 +10,7 @@ def test_train_station_scene_init():
             {"type": "line",
              "name": "A",
              "width": 8.0,
-             "length": 200.0
+             "length": 400.0
              },
             {"type": "platform",
              "width": 12.0,
@@ -35,3 +35,7 @@ def test_train_station_scene_init():
 
     scene = Scene(config["name"], config)
     assert len(scene._content) == 5
+    for c in scene._content:
+        if c.getContentType() == StationContentType.LINE:
+            assert c.getLineType() == StationLineType.COMMERCIAL
+    
