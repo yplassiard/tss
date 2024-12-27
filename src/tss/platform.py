@@ -19,6 +19,7 @@ class StationPlatform(StationContent):
     _width: float  # meters
     _equipments: list[Speaker]
     _station: "TrainStation"  # associated train station
+    _position: tuple[float, float]
 
     def __init__(self, station, config: dict):
         """Constructor"""
@@ -48,7 +49,12 @@ class StationPlatform(StationContent):
     def getWidth(self) -> int:
         return self._width
 
-    
+
+    def getPosition(self):
+        return self._position
+
+    def setPosition(self, position):
+        self._position = position
     def __str__(self):
         return f"Platform({self._length}x{self._width}m, with {len(self._equipments)} equipments)"
     

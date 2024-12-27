@@ -2,8 +2,11 @@
 TrainStation.py - a scene representing a train station
 """
 
-from src import constants
-from src import gameconfig
+from src import constants as constants
+from src import gameconfig as gameconfig
+from src import logger as logger
+
+
 from src.scenes.scene import IntervalScene
 
 from src.tss.content import (
@@ -12,7 +15,11 @@ from src.tss.content import (
 )
 
 from src.tss.planner import Planner
-from src.tss.line import StationLine
+from src.tss.line import (
+    StationLine,
+    StationLineType
+)
+
 from src.tss.platform import StationPlatform
 
 class Scene(IntervalScene):
@@ -39,30 +46,34 @@ class Scene(IntervalScene):
             logger.exception(self, f"Failed to parse station \"content\" array: {ex}", ex)
             raise ex
         errors = False
+        if len(lps) == 0:
+            raise RuntimeError("No \"content\" data")
         for content in lps:
-            ctype = gameconfig.get_value(content, "type", str, {"oneOf": ["line", "platform"]})
+            ctype = gameconfig.get_value(content, "type", str, {"oneOf": ["line", "platform"], "mandatory": True})
             obj = None
             if ctype == 'line':
                 try:
                     obj = StationLine(self, content)
                 except Exception as ex:
                     logger.exception(self, f"Failed to instanciate {ctype}: {ex}", ex)
+                    raise ex
                     errors = True
             elif ctype == 'platform':
                 try:
                     obj = StationPlatform(self, content)
                 except Exception as ex:
                     logger.exception(self, f"Failed to instanciate {ctype}: {ex}", ex)
+                    raise ex
                     errors = True
                 
-                if cur_pos + splatform.getWidth() > self._width:
-                    logger.error(self, f"{str(splatform)}: outside station area width")
-                    errors = True
-                    continue
-                obj.setPosition((cur_pos, 0.0))
-                cur_pos += obj.getWidth() + DEFAULT_SPACE_BETWEEN_LINE_AND_PLATFORM
-                self._content.append(obj)
-                
+            if cur_pos + obj.getWidth() > self._width:
+                logger.error(self, f"{str(obj)}: outside station area width")
+                errors = True
+                continue
+            obj.setPosition((cur_pos, 0.0))
+            cur_pos += obj.getWidth() + constants.DEFAULT_SPACE_BETWEEN_LINE_AND_PLATFORM
+            self._content.append(obj)
+
 
         if errors:
             raise RuntimeError(f"Error while parsing station content")
@@ -70,10 +81,10 @@ class Scene(IntervalScene):
         # determine if a line is storage
 
         for i in range(len(self._content)):
-            if self._content[i].getContentType() == StationContentType.LINE \
-               and ((i + 1 < len(self._content) and self._content[i + 1].getContentType() == StationContentType.PLATFORM) \
+            if self._content[i].getContentType() == StationContentType.LINE:
+                if ((i + 1 < len(self._content) and self._content[i + 1].getContentType() == StationContentType.PLATFORM) \
                     or (i > 0 and self._content[i - 1].getContentType() == StationContentType.PLATFORM)):
-                self._content[i].setLineType(StationLineType.COMMERCIAL)
-            else:
-                self._content[i].setLineType(StationLineType.STORAGE)
-        
+                    self._content[i].setLineType(StationLineType.COMMERCIAL)
+                else:
+                    self._content[i].setLineType(StationLineType.STORAGE)
+

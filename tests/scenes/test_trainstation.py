@@ -7,30 +7,31 @@ def test_train_station_scene_init():
         "length": 600.0,
         "width": 50.0,
         "content": [
-            {"content-type": "line",
+            {"type": "line",
              "name": "A",
              "width": 8.0,
              "length": 200.0
              },
-            {"content_type": "platform",
+            {"type": "platform",
              "width": 12.0,
              "length": 450.0
              },
-            {"content-type": "line",
+            {"type": "line",
              "name": "B",
              "width": 8.0,
              "length": 400.0,
              },
-            {"content-type": "line",
+            {"type": "line",
              "name": "C",
              "width": 8.0,
              "length": 300.0
              },
-            {"content-type": "platform",
+            {"type": "platform",
              "width": 12.0,
              "length": 450.0
              }
         ]
     }
+
     scene = Scene(config["name"], config)
-    
+    assert len(scene._content) == 5
