@@ -24,7 +24,7 @@ def platform_setup() -> None:
         elif system == 'linux':
             fmod_lib = 'libfmod.so'
         elif system == 'darwin':
-            fmod_lib = 'fmod.dylib'
+            fmod_lib = 'libfmod.dylib'
         else:
             raise RuntimeError("Unsupported platform: {system}")
         fmod_path = os.path.join(cur_dir, "res", system, machine, fmod_lib)
