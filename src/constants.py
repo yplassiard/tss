@@ -15,6 +15,11 @@ CAMERA_SIDE = 2
 # global configuration
 CONFIG_RESOURCE_DIR = "res"
 CONFIG_DATA_DIR = "data"
+CONFIG_SOUNDS_DIR = "sounds"
+CONFIG_PHRASES_DIR = "phrases"
+CONFIG_NUMBERS_DIR = "numbers"
+CONFIG_STATIONS_DIR = "stations"
+
 INTERVAL_TICK_RESOLUTION = 0.01
 
 # Audio constants

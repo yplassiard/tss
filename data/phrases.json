@@ -1,0 +1,238 @@
+[
+    {
+        "phrase": "Bienvenue dans Train Station Simulator",
+        "keyword": "welcome"
+    },
+    {
+        "phrase": "En provenance.",
+        "keyword": "train_from"
+    },
+    {
+        "phrase": "Et a destination,",
+        "keyword": "train_to"
+    },
+    {
+        "phrase": "L'intercit\u00e9?",
+        "keyword": "traintype_intercite"
+    },
+    {
+        "phrase": "Le T G V,",
+        "keyword": "traintype_tgv"
+    },
+    {
+        "phrase": "Le train T E R?",
+        "keyword": "traintype_ter"
+    },
+    {
+        "phrase": "Le train,",
+        "keyword": "traintype_train"
+    },
+    {
+        "phrase": "Num\u00e9ro.",
+        "keyword": "train_number"
+    },
+    {
+        "phrase": "est annonc\u00e9,",
+        "keyword": "train_announced"
+    },
+    {
+        "phrase": "va entrer en gare?",
+        "keyword": "train_willenter"
+    },
+    {
+        "phrase": "entre en gare",
+        "keyword": "train_entering"
+    },
+    {
+        "phrase": "d\u00e9part",
+        "keyword": "train_departure"
+    },
+    {
+        "phrase": "partira?",
+        "keyword": "train_willleave"
+    },
+    {
+        "phrase": "va partir.",
+        "keyword": "train_leaving"
+    },
+    {
+        "phrase": "Prenez garde \u00e0 la fermeture des portes s'il vous pla\u00eet, attention au d\u00e9part.",
+        "keyword": "train_doorclosing"
+    },
+    {
+        "phrase": "va \u00eatre mis en place?",
+        "keyword": "train_willbesetup"
+    },
+    {
+        "phrase": "voie?",
+        "keyword": "train_platform"
+    },
+    {
+        "phrase": "a.",
+        "keyword": "platform_a"
+    },
+    {
+        "phrase": "b.",
+        "keyword": "platform_b"
+    },
+    {
+        "phrase": "c.",
+        "keyword": "platform_c"
+    },
+    {
+        "phrase": "d.",
+        "keyword": "platform_d"
+    },
+    {
+        "phrase": "e.",
+        "keyword": "platform_e"
+    },
+    {
+        "phrase": "f.",
+        "keyword": "platform_f"
+    },
+    {
+        "phrase": "g.",
+        "keyword": "platform_g"
+    },
+    {
+        "phrase": "h.",
+        "keyword": "platform_h"
+    },
+    {
+        "phrase": "i.",
+        "keyword": "platform_i"
+    },
+    {
+        "phrase": "j.",
+        "keyword": "platform_j"
+    },
+    {
+        "phrase": "k.",
+        "keyword": "platform_k"
+    },
+    {
+        "phrase": "l.",
+        "keyword": "platform_l"
+    },
+    {
+        "phrase": "m.",
+        "keyword": "platform_m"
+    },
+    {
+        "phrase": "n.",
+        "keyword": "platform_n"
+    },
+    {
+        "phrase": "une.",
+        "keyword": "platform_1"
+    },
+    {
+        "phrase": "deux.",
+        "keyword": "platform_2"
+    },
+    {
+        "phrase": "trois.",
+        "keyword": "platform_3"
+    },
+    {
+        "phrase": "4.",
+        "keyword": "platform_4"
+    },
+    {
+        "phrase": "5.",
+        "keyword": "platform_5"
+    },
+    {
+        "phrase": "6.",
+        "keyword": "platform_6"
+    },
+    {
+        "phrase": "7.",
+        "keyword": "platform_7"
+    },
+    {
+        "phrase": "8.",
+        "keyword": "platform_8"
+    },
+    {
+        "phrase": "9.",
+        "keyword": "platform_9"
+    },
+    {
+        "phrase": "10.",
+        "keyword": "platform_10"
+    },
+    {
+        "phrase": "11.",
+        "keyword": "platform_11"
+    },
+    {
+        "phrase": "12.",
+        "keyword": "platform_12"
+    },
+    {
+        "phrase": "13.",
+        "keyword": "platform_13"
+    },
+    {
+        "phrase": "14.",
+        "keyword": "platform_14"
+    },
+    {
+        "phrase": "15.",
+        "keyword": "platform_15"
+    },
+    {
+        "phrase": "16.",
+        "keyword": "platform_16"
+    },
+    {
+        "phrase": "17.",
+        "keyword": "platform_17"
+    },
+    {
+        "phrase": "18.",
+        "keyword": "platform_18"
+    },
+    {
+        "phrase": "19.",
+        "keyword": "platform_19"
+    },
+    {
+        "phrase": "20.",
+        "keyword": "platform_20"
+    },
+    {
+        "phrase": "21.",
+        "keyword": "platform_21"
+    },
+    {
+        "phrase": "22.",
+        "keyword": "platform_22"
+    },
+    {
+        "phrase": "23.",
+        "keyword": "platform_23"
+    },
+    {
+        "phrase": "24.",
+        "keyword": "platform_24"
+    },
+    {
+        "phrase": "25.",
+        "keyword": "platform_25"
+    },
+    {
+        "phrase": "26.",
+        "keyword": "platform_26"
+    },
+    {
+        "phrase": "27.",
+        "keyword": "platform_27"
+    },
+    {
+        "phrase": "Ici:",
+        "keyword": "train_here"
+    }
+]
