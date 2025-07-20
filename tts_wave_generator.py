@@ -61,13 +61,18 @@ class MyFrame(wx.Frame):
         self.pg = None
         self.panel = wx.Panel(self)
 
-        # UI elements
-        self.phrase_list = wx.ListCtrl(self.panel, style=wx.LC_REPORT)
-        self.phrase_list.InsertColumn(0, "Phrases", width=400)
+        # UI elements - Use ListBox instead of ListCtrl for better accessibility
+        self.phrase_list = wx.ListBox(self.panel, style=wx.LB_SINGLE)
         
         # Improve accessibility
         self.phrase_list.SetLabel("Phrase List")
         self.phrase_list.SetHelpText("List of phrases to generate audio files for")
+        
+        # Force accessibility attributes on macOS/iOS
+        if hasattr(self.phrase_list, 'SetAccessibleName'):
+            self.phrase_list.SetAccessibleName("Phrase List")
+        if hasattr(self.phrase_list, 'SetAccessibleDescription'):
+            self.phrase_list.SetAccessibleDescription("List of phrases to generate audio files for. Use arrow keys to navigate, Enter to preview, Delete to remove.")
 
         self.add_button = wx.Button(self.panel, label="&Add Phrase")
         self.remove_button = wx.Button(self.panel, label="&Remove Phrase")
@@ -124,10 +129,9 @@ class MyFrame(wx.Frame):
         self.voice_choice.Bind(wx.EVT_CHOICE, self.on_voice_selected)
         self.rate_slider.Bind(wx.EVT_SLIDER, self.on_rate_changed)
         
-        # Add keyboard navigation for ListCtrl
+        # Add keyboard navigation for ListBox
         self.phrase_list.Bind(wx.EVT_KEY_DOWN, self.on_list_key_down)
-        self.phrase_list.Bind(wx.EVT_LIST_ITEM_SELECTED, self.on_list_item_selected)
-        self.phrase_list.Bind(wx.EVT_LIST_ITEM_FOCUSED, self.on_list_item_focused)
+        self.phrase_list.Bind(wx.EVT_LISTBOX, self.on_list_item_selected)
 
 
         # Load phrases from file
@@ -143,13 +147,16 @@ class MyFrame(wx.Frame):
             with open("data/phrases.json", "r") as f:
                 self.phrases = json.load(f)
                 self.phrases.sort(key=lambda x: x['phrase'])
-                for phrase in self.phrases:
-                    index = self.phrase_list.InsertItem(self.phrase_list.GetItemCount(), f"{phrase['phrase']}; {phrase['keyword']}")
-                    # Set accessible name for each item
-                    self.phrase_list.SetItemData(index, index)
-
+                self.refresh_phrase_list()
         except FileNotFoundError:
             self.phrases = []
+    
+    def refresh_phrase_list(self):
+        """Refresh the phrase list display"""
+        self.phrase_list.Clear()
+        for phrase in self.phrases:
+            display_text = f"{phrase['phrase']}; {phrase['keyword']}"
+            self.phrase_list.Append(display_text)
 
     def save_phrases(self):
         with open("data/phrases.json", "w") as f:
@@ -160,20 +167,22 @@ class MyFrame(wx.Frame):
         if dlg.ShowModal() == wx.ID_OK:
             values = dlg.getValues()
             self.phrases.append({"phrase": values[0], "keyword": values[1]})
-            index = self.phrase_list.InsertItem(self.phrase_list.GetItemCount(), f"{values[0]}; {values[1]}")
-            # Set accessible data for new item
-            self.phrase_list.SetItemData(index, len(self.phrases) - 1)
-            # Focus the new item for screen readers
-            self.phrase_list.SetItemState(index, wx.LIST_STATE_SELECTED | wx.LIST_STATE_FOCUSED, 
-                                        wx.LIST_STATE_SELECTED | wx.LIST_STATE_FOCUSED)
+            self.refresh_phrase_list()
+            # Select the new item
+            self.phrase_list.SetSelection(len(self.phrases) - 1)
             self.save_phrases()
         dlg.Destroy()
 
     def on_remove_phrase(self, event):
-        selected_index = self.phrase_list.GetFirstSelected()
-        if selected_index != -1:
-            self.phrase_list.DeleteItem(selected_index)
+        selected_index = self.phrase_list.GetSelection()
+        if selected_index != wx.NOT_FOUND:
             del self.phrases[selected_index]
+            self.refresh_phrase_list()
+            # Select next item or previous if at end
+            if selected_index < len(self.phrases):
+                self.phrase_list.SetSelection(selected_index)
+            elif len(self.phrases) > 0:
+                self.phrase_list.SetSelection(len(self.phrases) - 1)
             self.save_phrases()
 
     def generate_numbers(self):
@@ -244,14 +253,14 @@ class MyFrame(wx.Frame):
         self.pg.Destroy()
         self.pg = None
     def on_generate_selected(self, event):
-        selected_index = self.phrase_list.GetFirstSelected()
-        if selected_index != -1:
+        selected_index = self.phrase_list.GetSelection()
+        if selected_index != wx.NOT_FOUND:
             phrase = self.phrases[selected_index]
             self.generate_wave_file(phrase["phrase"], phrase["keyword"])
 
     def on_preview(self, event):
-        selected_index = self.phrase_list.GetFirstSelected()
-        if selected_index != -1:
+        selected_index = self.phrase_list.GetSelection()
+        if selected_index != wx.NOT_FOUND:
             phrase = self.phrases[selected_index]
             self.speak_phrase(phrase['phrase'])
 
@@ -320,21 +329,12 @@ class MyFrame(wx.Frame):
             event.Skip()
 
     def on_list_item_selected(self, event):
-        """Announce selected item to screen reader"""
-        index = event.GetIndex()
-        if index >= 0 and index < len(self.phrases):
+        """Handle item selection"""
+        index = self.phrase_list.GetSelection()
+        if index != wx.NOT_FOUND and index < len(self.phrases):
             phrase = self.phrases[index]
-            # This helps screen readers announce the selection
-            self.phrase_list.SetItemState(index, wx.LIST_STATE_FOCUSED, wx.LIST_STATE_FOCUSED)
-        event.Skip()
-
-    def on_list_item_focused(self, event):
-        """Handle item focus for accessibility"""
-        index = event.GetIndex()
-        if index >= 0 and index < len(self.phrases):
-            phrase = self.phrases[index]
-            # Set accessible description for the focused item
-            description = f"Phrase: {phrase['phrase']}, Keyword: {phrase['keyword']}"
+            # Update help text for screen readers
+            description = f"Selected: {phrase['phrase']}, Keyword: {phrase['keyword']}"
             self.phrase_list.SetHelpText(description)
         event.Skip()
 
