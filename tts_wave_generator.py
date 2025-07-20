@@ -64,6 +64,10 @@ class MyFrame(wx.Frame):
         # UI elements
         self.phrase_list = wx.ListCtrl(self.panel, style=wx.LC_REPORT)
         self.phrase_list.InsertColumn(0, "Phrases", width=400)
+        
+        # Improve accessibility
+        self.phrase_list.SetLabel("Phrase List")
+        self.phrase_list.SetHelpText("List of phrases to generate audio files for")
 
         self.add_button = wx.Button(self.panel, label="&Add Phrase")
         self.remove_button = wx.Button(self.panel, label="&Remove Phrase")
@@ -119,6 +123,11 @@ class MyFrame(wx.Frame):
         self.preview_button.Bind(wx.EVT_BUTTON, self.on_preview)
         self.voice_choice.Bind(wx.EVT_CHOICE, self.on_voice_selected)
         self.rate_slider.Bind(wx.EVT_SLIDER, self.on_rate_changed)
+        
+        # Add keyboard navigation for ListCtrl
+        self.phrase_list.Bind(wx.EVT_KEY_DOWN, self.on_list_key_down)
+        self.phrase_list.Bind(wx.EVT_LIST_ITEM_SELECTED, self.on_list_item_selected)
+        self.phrase_list.Bind(wx.EVT_LIST_ITEM_FOCUSED, self.on_list_item_focused)
 
 
         # Load phrases from file
@@ -136,6 +145,8 @@ class MyFrame(wx.Frame):
                 self.phrases.sort(key=lambda x: x['phrase'])
                 for phrase in self.phrases:
                     index = self.phrase_list.InsertItem(self.phrase_list.GetItemCount(), f"{phrase['phrase']}; {phrase['keyword']}")
+                    # Set accessible name for each item
+                    self.phrase_list.SetItemData(index, index)
 
         except FileNotFoundError:
             self.phrases = []
@@ -150,6 +161,11 @@ class MyFrame(wx.Frame):
             values = dlg.getValues()
             self.phrases.append({"phrase": values[0], "keyword": values[1]})
             index = self.phrase_list.InsertItem(self.phrase_list.GetItemCount(), f"{values[0]}; {values[1]}")
+            # Set accessible data for new item
+            self.phrase_list.SetItemData(index, len(self.phrases) - 1)
+            # Focus the new item for screen readers
+            self.phrase_list.SetItemState(index, wx.LIST_STATE_SELECTED | wx.LIST_STATE_FOCUSED, 
+                                        wx.LIST_STATE_SELECTED | wx.LIST_STATE_FOCUSED)
             self.save_phrases()
         dlg.Destroy()
 
@@ -291,6 +307,36 @@ class MyFrame(wx.Frame):
 
     def on_rate_changed(self, event):
         pass
+
+    def on_list_key_down(self, event):
+        """Handle keyboard navigation in the list"""
+        key_code = event.GetKeyCode()
+        
+        if key_code == wx.WXK_DELETE:
+            self.on_remove_phrase(event)
+        elif key_code == wx.WXK_RETURN or key_code == wx.WXK_SPACE:
+            self.on_preview(event)
+        else:
+            event.Skip()
+
+    def on_list_item_selected(self, event):
+        """Announce selected item to screen reader"""
+        index = event.GetIndex()
+        if index >= 0 and index < len(self.phrases):
+            phrase = self.phrases[index]
+            # This helps screen readers announce the selection
+            self.phrase_list.SetItemState(index, wx.LIST_STATE_FOCUSED, wx.LIST_STATE_FOCUSED)
+        event.Skip()
+
+    def on_list_item_focused(self, event):
+        """Handle item focus for accessibility"""
+        index = event.GetIndex()
+        if index >= 0 and index < len(self.phrases):
+            phrase = self.phrases[index]
+            # Set accessible description for the focused item
+            description = f"Phrase: {phrase['phrase']}, Keyword: {phrase['keyword']}"
+            self.phrase_list.SetHelpText(description)
+        event.Skip()
 
 if __name__ == "__main__":
     app = wx.App()
